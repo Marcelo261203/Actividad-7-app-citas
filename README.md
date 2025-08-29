@@ -126,9 +126,11 @@ src/
 - Reglas de seguridad por usuario
 
 ### Notificaciones
-- **Expo Notifications** para notificaciones locales
-- Programación automática de recordatorios
-- Gestión de permisos móviles
+- **Expo Notifications** para notificaciones locales (móviles únicamente)
+- Programación automática de recordatorios con tiempos personalizables
+- Gestión de permisos móviles nativos
+- Badge de notificaciones con contador en tiempo real
+- Integración nativa con sonidos y vibración del dispositivo
 
 ## 🔧 Configuración de Notificaciones
 
@@ -152,17 +154,33 @@ La aplicación solicita permisos para:
 ## ⚠️ Limitaciones y Consideraciones
 
 ### 🖥️ Limitaciones de la Web
-Esta aplicación está **optimizada específicamente para dispositivos móviles** y tiene limitaciones importantes en la web:
+Esta aplicación está **optimizada específicamente para dispositivos móviles** y tiene limitaciones técnicas importantes en la web:
 
-#### 🔔 **Notificaciones Locales**
-- **Expo Notifications** solo funciona en dispositivos móviles nativos (iOS/Android)
-- Las notificaciones locales **NO funcionan en navegadores web**
-- Esta es una limitación técnica de las APIs de notificaciones web vs móviles
+#### 🔔 **Notificaciones Locales - Limitación Técnica**
+- **Expo Notifications** está diseñado exclusivamente para **dispositivos móviles nativos** (iOS/Android)
+- Las notificaciones locales **NO funcionan en navegadores web** debido a diferencias fundamentales en las APIs
+- **React Native Push Notification** fue discontinuado para SDK 53+, por lo que **Expo Notifications es la alternativa oficial recomendada**
 
-#### 📱 **Funcionalidades Móviles**
-- **Badge de notificaciones**: Solo disponible en dispositivos móviles
-- **Sonidos de notificación**: Limitados en navegadores web
-- **Persistencia de datos**: Firebase funciona en web, pero las notificaciones no
+#### 📱 **Funcionalidades Específicas de Móvil**
+- **Badge de notificaciones**: Solo disponible en dispositivos móviles (API nativa)
+- **Sonidos de notificación**: Integración nativa con el sistema operativo
+- **Vibración**: Control nativo del dispositivo
+- **Persistencia de datos**: Firebase funciona en web, pero las notificaciones requieren APIs móviles
+
+#### 🎯 **¿Por qué Solo Móviles?**
+```typescript
+// Expo Notifications - Solo funciona en móviles
+import * as Notifications from 'expo-notifications';
+
+// En web, esto NO funciona:
+await Notifications.scheduleNotificationAsync({
+  content: { title: "Recordatorio" },
+  trigger: { seconds: 60 }
+});
+
+// Para web necesitarías Service Workers + Web Push API
+// que es una implementación completamente diferente
+```
 
 #### 🎯 **Recomendación**
 Para una experiencia completa, se recomienda usar la aplicación en:
@@ -170,11 +188,36 @@ Para una experiencia completa, se recomienda usar la aplicación en:
 - **Dispositivos Android** con Expo Go
 - **Emuladores** de iOS/Android
 
-### 🔧 Desarrollo Web
-Si necesitas funcionalidad web completa, considera:
-- Implementar **notificaciones push** con Firebase Cloud Messaging
-- Usar **Service Workers** para notificaciones web
-- Crear una **versión web separada** con funcionalidades adaptadas
+### 🔧 Alternativas para Desarrollo Web
+Si necesitas funcionalidad web completa en el futuro, considera:
+
+#### **1. Firebase Cloud Messaging (FCM)**
+```typescript
+// Para web necesitarías:
+import { getMessaging, onMessage } from 'firebase/messaging';
+```
+
+#### **2. Service Workers + Web Push API**
+```javascript
+// API nativa del navegador
+self.addEventListener('push', function(event) {
+  // Manejar notificaciones push
+});
+```
+
+#### **3. Implementación Híbrida**
+- **Móvil**: Mantener Expo Notifications (actual)
+- **Web**: Implementar FCM + Service Workers
+- **Backend**: Firebase para sincronización
+
+### 🚀 **Ventajas del Enfoque Actual**
+- ✅ **Funciona perfectamente** en iOS/Android
+- ✅ **API moderna** y mantenida por Expo
+- ✅ **Integración nativa** con el sistema operativo
+- ✅ **Badge de notificaciones** nativo
+- ✅ **Sonidos y vibración** nativos
+- ✅ **Compatibilidad** con SDK 53+
+- ✅ **Mantenimiento activo** por el equipo de Expo
 
 ## 📝 Scripts Disponibles
 
@@ -201,6 +244,20 @@ npm run build
 1. Ve a [Firebase Console](https://console.firebase.google.com/)
 2. Crea un nuevo proyecto
 3. Habilita **Authentication** y **Firestore Database**
+
+## 🛠️ Decisiones Técnicas
+
+### **¿Por qué Expo Notifications?**
+- **React Native Push Notification** fue **discontinuado** para SDK 53+
+- **Expo Notifications** es la **alternativa oficial** recomendada por Expo
+- **Mantenimiento activo** y compatibilidad garantizada
+- **Integración nativa** con iOS/Android
+
+### **¿Por qué Solo Móviles?**
+- **APIs diferentes**: Las notificaciones web y móviles usan APIs completamente diferentes
+- **Funcionalidad nativa**: Badge, sonidos y vibración requieren APIs del sistema operativo
+- **Experiencia optimizada**: Mejor rendimiento y funcionalidad en dispositivos móviles
+- **Mantenimiento simplificado**: Una sola implementación para ambas plataformas móviles
 
 ### 2. Configurar Autenticación
 - Habilita **Email/Password** en Authentication
