@@ -164,3 +164,4 @@ Después de aplicar la solución:
 - ✅ **Notificaciones funcionan** como antes
 
 ¡La aplicación debería funcionar correctamente ahora! 🚀
+

@@ -107,3 +107,4 @@ El formulario ahora funciona correctamente:
 - ✅ Mantiene valores por defecto apropiados
 - ✅ Mejora la experiencia del usuario
 
+

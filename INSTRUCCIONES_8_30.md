@@ -107,3 +107,4 @@ Deberías ver algo como:
 
 **¡Recuerda!** Las notificaciones programadas pueden no funcionar en emuladores o en modo desarrollo. Es mejor probar en un dispositivo físico.
 
+

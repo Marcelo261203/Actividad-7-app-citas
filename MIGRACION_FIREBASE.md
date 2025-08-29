@@ -139,3 +139,4 @@ const firebaseConfig = {
 - Se mantiene la funcionalidad de 15 minutos antes de la cita
 
 ¡La migración está completa y lista para usar! 🚀
+

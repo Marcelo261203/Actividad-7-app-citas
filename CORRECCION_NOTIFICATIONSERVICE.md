@@ -84,3 +84,4 @@ static async scheduleNotificationAsync(notification: {
 - ✅ Compatible con scripts de prueba
 - ✅ Mantiene toda la funcionalidad original
 
+

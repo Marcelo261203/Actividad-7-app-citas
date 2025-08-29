@@ -15,6 +15,7 @@ import { colors, getCategoryColor } from '../utils/colors';
 import { Button } from '../components/Button';
 import { useAppointments } from '../context/AppointmentContext';
 import { getTimeSlots } from '../utils/dateUtils';
+import TimePicker from '../components/TimePicker';
 import {
   Calendar,
   Clock,
@@ -55,7 +56,6 @@ export const NewAppointmentScreen: React.FC<NewAppointmentScreenProps> = ({ navi
   const [doctor, setDoctor] = useState('');
   const [location, setLocation] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const timeSlots = getTimeSlots();
@@ -84,13 +84,8 @@ export const NewAppointmentScreen: React.FC<NewAppointmentScreenProps> = ({ navi
     }
   };
 
-  const handleTimeChange = (event: any, time?: Date) => {
-    setShowTimePicker(Platform.OS === 'ios');
-    if (time) {
-      const hours = time.getHours().toString().padStart(2, '0');
-      const minutes = time.getMinutes().toString().padStart(2, '0');
-      setSelectedTime(`${hours}:${minutes}`);
-    }
+  const handleTimeChange = (time: string) => {
+    setSelectedTime(time);
   };
 
   const handleSubmit = async () => {
@@ -237,15 +232,13 @@ export const NewAppointmentScreen: React.FC<NewAppointmentScreenProps> = ({ navi
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.dateTimeButton}
-              onPress={() => setShowTimePicker(true)}
-            >
-              <Clock size={20} color={colors.textSecondary} />
-              <Text style={styles.dateTimeText}>
-                {selectedTime} ({selectedDuration} min)
-              </Text>
-            </TouchableOpacity>
+            <TimePicker
+              value={selectedTime}
+              onTimeChange={handleTimeChange}
+              label="Hora de la cita"
+            />
+            
+            <Text style={styles.durationLabel}>Duración: {selectedDuration} min</Text>
           </View>
 
           {/* Duration */}
@@ -336,15 +329,7 @@ export const NewAppointmentScreen: React.FC<NewAppointmentScreenProps> = ({ navi
         />
       )}
 
-      {/* Time Picker */}
-      {showTimePicker && (
-        <DateTimePicker
-          value={new Date(`2000-01-01T${selectedTime}:00`)}
-          mode="time"
-          display="default"
-          onChange={handleTimeChange}
-        />
-      )}
+
     </SafeAreaView>
   );
 };
@@ -496,6 +481,12 @@ const styles = StyleSheet.create({
   },
   durationTextSelected: {
     color: colors.textInverse,
+  },
+  durationLabel: {
+    fontSize: 14,
+    color: colors.textSecondary,
+    marginTop: 8,
+    textAlign: 'center',
   },
   submitSection: {
     marginTop: 32,

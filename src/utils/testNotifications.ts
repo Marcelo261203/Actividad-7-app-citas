@@ -223,3 +223,4 @@ export const scheduleNotificationAsync = async (content: any, trigger: any) => {
   return await NotificationService.scheduleNotificationAsync({ content, trigger });
 };
 
+

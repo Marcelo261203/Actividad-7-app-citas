@@ -225,3 +225,4 @@ const migrateToFirebase = async () => {
 - ✅ **Datos persistentes** en el dispositivo
 
 ¡La aplicación está completamente funcional con almacenamiento local! 🚀
+

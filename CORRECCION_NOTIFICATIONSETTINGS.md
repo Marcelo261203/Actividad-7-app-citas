@@ -111,3 +111,4 @@ Se eliminó la función `createTestAppointment` que usaba `NotificationTester` y
 - El botón de prueba es útil para verificar que las notificaciones funcionan
 - Se mantiene la funcionalidad principal de configuración de notificaciones
 
+
